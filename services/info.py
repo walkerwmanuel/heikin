@@ -35,8 +35,8 @@ def getCandleSnapshot(coin, interval):
     # Get current timestamp (in milliseconds)
     end_time = int(time.time() * 1000)
     
-    # 5 minutes and 60000 ms * number of wanted candles 1 day = 288
-    start_time = end_time - (288 * 10 * 5 * 60000)  
+    # number of candles you want * minutes inside of candle * 60000 to convert ms to hours
+    start_time = end_time - (2880 * 5 * 60000)
 
     # Request payload
     payload = {
@@ -55,6 +55,7 @@ def getCandleSnapshot(coin, interval):
     if response.status_code == 200:
         data = response.json()
         return data
+        
     else:
         print(f"Error {response.status_code}: {response.text}")
         return None
