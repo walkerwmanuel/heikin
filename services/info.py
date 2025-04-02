@@ -2,6 +2,7 @@ import websockets
 import json
 import time
 import requests
+import datetime
 
 async def getCandles(coin, interval):
     url = "wss://api.hyperliquid.xyz/ws"  # WebSocket API endpoint
@@ -34,9 +35,16 @@ def getCandleSnapshot(coin, interval):
 
     # Get current timestamp (in milliseconds)
     end_time = int(time.time() * 1000)
+
+    # Create a datetime object for February 28, 2025 at 00:01:00 UTC
+    target_date = datetime.datetime(2025, 2, 28, 0, 1, 0, tzinfo=datetime.timezone.utc)
+    # Convert to Unix timestamp (seconds since epoch)
+    timestamp_seconds = target_date.timestamp()
+    # Convert to milliseconds
+    end_time = int(timestamp_seconds * 1000)
     
-    # number of candles you want * minutes inside of candle * 60000 to convert ms to hours
-    start_time = end_time - (2880 * 5 * 60000)
+    # number of minutes you want * 60000 - 14400 is 10 days in minutes
+    start_time = end_time - (14400 * 60000)
 
     # Request payload
     payload = {
